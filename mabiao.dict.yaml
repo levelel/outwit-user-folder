@@ -1,0 +1,9 @@
+# Rime dictionary
+# encoding: utf-8
+---
+name: mabiao
+version: "0.1"
+sort: by_weight
+use_preset_vocabulary: false
+import_tables:
+  - dicts/mabiao/经典版 86 五笔

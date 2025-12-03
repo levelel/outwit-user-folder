@@ -1,0 +1,138 @@
+# encoding: utf-8
+
+schema:
+  schema_id: witcraft
+  name: 丝维主辅码
+  version: "0.1"
+  author:
+    - 几维输入法
+  description: |
+    通用主码（主要是音码：拼音/双拼）与辅码（主要是各种形码）结合的输入方案
+    主码在前，辅码在后，支持灵活引导符
+
+# 开关
+switches:
+  - name: ascii_mode
+    reset: 0
+    states: [ 中, A ]
+    description: 中英文切换
+  - name: full_shape
+    reset: 0
+    states: [ 半, 全 ]
+    description: 全角半角字符切换
+  - name: simplification
+    reset: 0
+    states: [ 简, 繁 ]
+    description: 简体繁体切换
+  - name: ascii_punct
+    reset: 0
+    states: [ 。，, ．， ]
+    description: 全角半角符号切换
+  - name: word_char
+    reset: 0
+    states: [ 词语优先, 单字优先 ]
+    description: 词语或是单字候选排在前面
+  - name: enable_fuma_filter
+    reset: 1
+    states: [ 禁用辅码, 启用辅码 ]
+    description: 是否开启辅码功能
+  - name: show_fuma_comment
+    reset: 1
+    states: [ 隐藏辅码, 显示辅码 ]
+    description: 候选注释是否显示辅码
+
+# 引擎配置
+engine:
+  processors:
+    - ascii_composer
+    - witcraft_processor
+    - recognizer
+    - key_binder
+    - speller
+    - punctuator
+    - selector
+    - navigator
+    - express_editor
+  segmentors:
+    - ascii_segmentor
+    - witcraft_segmentor
+    - matcher
+    - abc_segmentor
+    - punct_segmentor
+    - fallback_segmentor
+  translators:
+    - punct_translator
+    - witcraft_translator
+    - table_translator@custom_phrase
+  filters:
+    - witcraft_filter
+    - uniquifier
+    - single_char_filter
+
+# 主辅混输配置
+witcraft:
+  # 主辅码分隔符/引导符
+  separator: ";"
+  # 辅码词典
+  fuma_dict: fuma
+
+# 主翻译器，双拼转换为拼音
+translator:
+  dictionary: zhuma           # 挂载词库 rime_ice.dict.yaml
+  initial_quality: 1.2        # 拼音的权重应该比英文大
+  enable_sentence: false      # 禁用造句
+  enable_completion: true     # 启用音节补全
+  enable_word_completion: true # 启用词语补全
+  enable_user_dict: false     # 已禁用用户词典
+  # preedit_format:             # preedit_format 影响到输入框的显示和"Shift+回车"上屏的字符
+  #   - xform/([jqxy])v/$1u/    # 显示为 ju qu xu yu
+  #   - xform/([nl])v/$1v/      # 显示为 nv lv
+  #   - xform/([nl])ue/$1ve/    # 显示为 nve lve        
+
+# 自定义短语
+custom_phrase:
+  dictionary: ""
+  user_dict: custom_phrase
+  db_class: stabledb
+  initial_quality: 99
+
+# Emoji
+emoji:
+  option_name: emoji
+  opencc_config: emoji.json
+  inherit_comment: false
+
+# 简繁切换
+simplifier:
+  option_name: simplification
+  opencc_config: s2t.json
+  tips: none
+
+# 标点符号
+punctuator:
+  import_preset: default
+  digit_separators: ""
+  digit_separator_action: commit # 数字后默认是半角句号
+  # # 如果默认要在数字后输出全角句号
+  # half_shape:  
+  #   ".": "。"  
+
+# 识别器
+recognizer:
+  import_preset: default
+
+# 按键绑定
+key_binder:
+  import_preset: default
+
+# Speller 配置
+speller:
+  # auto_select: true  
+  # # auto_clear: manual  
+  # max_code_length: 4  # 根据需要调整  
+
+  alphabet: abcdefghijklmnopqrstuvwxyz;  # 包含字母和引导符
+  initials: abcdefghijklmnopqrstuvwxyz    # 仅字母作为起始字符
+  delimiter: " '"                         # 分隔符
+  algebra:
+    __include: shuangpin_algebra:/algebra

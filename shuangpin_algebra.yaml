@@ -1,0 +1,9 @@
+# encoding: utf-8
+# 双拼映射规则
+# 可被多个方案共享引用
+
+# 此文件定义了完整的双拼 algebra 规则
+# 使用方式：在其他 schema 的 custom.yaml 中引用
+#   "speller/algebra":
+#     __include: shuangpin_algebra:/algebra
+algebra: []

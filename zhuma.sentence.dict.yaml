@@ -1,0 +1,18 @@
+# Rime dictionary
+# encoding: utf-8
+
+---
+name: zhuma.sentence
+version: "2025-09-21"
+
+# 使用万象词库作为基础词典
+import_tables:
+  - dicts/sentence/base
+  - dicts/sentence/chars
+  - dicts/sentence/compatible
+  - dicts/sentence/corrections
+  - dicts/sentence/correlation
+  - dicts/sentence/place
+  - dicts/sentence/poetry
+  - dicts/sentence/suggestion
+...

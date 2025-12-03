@@ -1,0 +1,153 @@
+# encoding: utf-8
+
+schema:
+  schema_id: witset
+  name: 丝维整句
+  version: "0.1"
+  author:
+    - 几维输入法
+  description: |
+    丝维整句输入方案。支持基于上下文的智能选词造句以及基于语义识别 AI 大模型智能纠错。
+
+# 开关
+switches:
+  - name: ascii_mode
+    reset: 0
+    states: [ 中, A ]
+    description: 中英文切换
+  - name: full_shape
+    reset: 0
+    states: [ 半, 全 ]
+    description: 全角半角字符切换
+  - name: simplification
+    reset: 0
+    states: [ 简, 繁 ]
+    description: 简体繁体切换
+  - name: ascii_punct
+    reset: 0
+    states: [ 。，, ．， ]
+    description: 全角半角符号切换
+
+# 引擎配置
+engine:
+  processors:
+    - ascii_composer
+    - witset_processor
+    - recognizer
+    - key_binder
+    - speller
+    - punctuator
+    - selector
+    - navigator
+    - express_editor
+  segmentors:
+    - ascii_segmentor
+    - matcher
+    - abc_segmentor
+    - punct_segmentor
+    - fallback_segmentor
+  translators:
+    - punct_translator
+    - witset_translator
+    - table_translator@custom_phrase
+  filters:
+    - witset_filter
+    - uniquifier
+    - single_char_filter
+
+# 主翻译器，双拼转换为拼音
+translator:
+  dictionary: zhuma.sentence    
+  initial_quality: 1.2        # 拼音的权重应该比英文大
+  enable_sentence: false      # 禁用造句
+  enable_completion: false     # 启用音节补全
+  enable_word_completion: true # 启用词语补全
+  max_candidates: 10
+  enable_user_dict: false     # 已禁用用户词典
+  # preedit_format:             # preedit_format 影响到输入框的显示和"Shift+回车"上屏的字符
+  #   - xform/([jqxy])v/$1u/    # 显示为 ju qu xu yu
+  #   - xform/([nl])v/$1v/      # 显示为 nv lv
+  #   - xform/([nl])ue/$1ve/    # 显示为 nve lve 
+    
+  # 🆕 Witset Poet 造句配置
+  beam_size: 60
+  max_homophones: 50
+  max_candidates: 50
+  display_candidates: 1
+  show_word_candidates: true
+    
+  # 🆕 延迟剪枝配置（Lazy Pruning）
+  word_beam_size: 300
+  sentence_beam_size: 1000
+  lazy_prune_min_words: 100
+  lazy_prune_ratio: 1.0
+  sentence_soft_limit: 36000
+    
+  # 🆕 LLM 智能纠错配置
+  correction_key: ";"
+  correction_candidates: 2
+
+# 菜单配置
+menu:
+  page_size: 5
+
+# Grammar 配置
+grammar:
+  language: "wanxiang-lts-zh-hans"
+  collocation_max_length: 8
+  collocation_min_length: 3
+  collocation_penalty: -10
+  non_collocation_penalty: -12
+  weak_collocation_penalty: -24
+  rear_penalty: -30       
+
+# 自定义短语
+custom_phrase:
+  dictionary: ""
+  user_dict: custom_phrase
+  db_class: stabledb
+  initial_quality: 99
+
+# Emoji
+emoji:
+  option_name: emoji
+  opencc_config: emoji.json
+  inherit_comment: false
+
+# 简繁切换
+simplifier:
+  option_name: simplification
+  opencc_config: s2t.json
+  tips: none
+
+# 🆕 外部上下文支持（用于 AI 增强输入）
+external_context:
+  enabled: true                   # 是否启用外部上下文获取
+
+# 标点符号
+punctuator:
+  import_preset: default
+  digit_separator_action: commit # 数字后默认是半角句号
+  digit_separators: ""
+  # # 如果默认要在数字后输出全角句号
+  # half_shape:  
+  #   ".": "。"  
+
+# 识别器
+recognizer:
+  import_preset: default
+
+# 按键绑定
+key_binder:
+  import_preset: default
+
+# Speller 配置
+speller:
+  # auto_select: true  
+  # # auto_clear: manual  
+  # max_code_length: 4  # 根据需要调整  
+  alphabet: abcdefghijklmnopqrstuvwxyz;
+  initials: abcdefghijklmnopqrstuvwxyz
+  delimiter: " '"                         # 分隔符
+  algebra:
+    __include: shuangpin_algebra:/algebra

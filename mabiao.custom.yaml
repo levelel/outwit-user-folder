@@ -1,0 +1,4 @@
+customization:
+    distribution_code_name: Outwit
+    generator: OutwitThemeDesigner
+patch: {}

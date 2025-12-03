@@ -1,0 +1,28 @@
+customization:
+  distribution_code_name: Outwit
+  generator: OutwitThemeDesigner
+patch:
+  "style/color_scheme": "outwit_light"
+  "preset_color_schemes/outwit_light":
+    name: "几维亮色／Outwit Light"
+    author: "几维输入法"
+    color_format: rgba
+    text_color: 0x1b1f2aff
+    shadow_color: 0x00000029
+    label_color: 0x4b5ab0ff
+    comment_text_color: 0x7a84bfff
+    border_color: 0xd7dcf7ff
+    back_color: 0xf5f6ffff
+    candidate_text_color: 0x2a2f45ff
+    hilited_text_color: 0xfffefcff
+    hilited_back_color: 0xe2e7ffff
+    hilited_shadow_color: 0x0000001c
+    hilited_candidate_text_color: 0x1b1f2aff
+    hilited_candidate_border_color: 0x7b8dffff
+    hilited_candidate_back_color: 0xcad3ffff
+    hilited_candidate_shadow_color: 0x00000014
+    hilited_label_color: 0x4b5ab0ff
+    hilited_comment_text_color: 0x5c6ac5ff
+    hilited_mark_color: 0x6b7dffff
+    nextpage_color: 0x9099dfff
+    prevpage_color: 0x7d86d6ff
