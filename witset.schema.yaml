@@ -87,10 +87,6 @@ translator:
   correction_key: ";"
   correction_candidates: 2
 
-# 菜单配置
-menu:
-  page_size: 5
-
 # Grammar 配置
 grammar:
   language: "wanxiang-lts-zh-hans"

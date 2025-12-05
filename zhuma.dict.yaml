@@ -7,8 +7,6 @@ version: "2025-09-21"
 
 # 使用 rime_ice 作为基础词典
 import_tables:
-  - dicts/phonetic/snow_pinyin.base
-  - dicts/phonetic/snow_pinyin
-  - dicts/phonetic/snow_pinyin.ext
-  - dicts/phonetic/snow_pinyin.tencent
+  - dicts/phonetic/jichu
+  - dicts/phonetic/zi
 ...
